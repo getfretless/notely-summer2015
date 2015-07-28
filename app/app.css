@@ -1,4 +1,8 @@
 /* app css stylesheet */
+body {
+  font-family: 'Merriweather';
+  font-size: 1.5em;
+}
 
 .menu {
   list-style: none;
