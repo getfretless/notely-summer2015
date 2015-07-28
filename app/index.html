@@ -6,30 +6,55 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>My AngularJS App</title>
-  <meta name="description" content="">
+  <title>Notely</title>
+  <meta name="description" content="Note taking to the next level">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="bower_components/html5-boilerplate/dist/css/normalize.css">
-  <link rel="stylesheet" href="bower_components/html5-boilerplate/dist/css/main.css">
+  <link rel="stylesheet" href="bower_components/html5-boilerplate/css/normalize.css">
+  <link rel="stylesheet" href="bower_components/html5-boilerplate/css/main.css">
   <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css">
   <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Merriweather:400,300,300italic|Oxygen:400,300,700">
   <link rel="stylesheet" href="app.css">
-  <script src="bower_components/html5-boilerplate/dist/js/vendor/modernizr-2.8.3.min.js"></script>
-  <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+  <script src="bower_components/html5-boilerplate/js/vendor/modernizr-2.6.2.min.js"></script>
 </head>
 <body>
-  <ul class="menu">
+  <!--ul class="menu">
     <li><a href="#/view1">view1</a></li>
     <li><a href="#/view2">view2</a></li>
-  </ul>
+  </ul-->
 
   <!--[if lt IE 7]>
       <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
   <![endif]-->
 
-  <div ng-view></div>
-
-  <div>Angular seed app: v<span app-version></span></div>
+  <div class="container wrap">
+    <div class="row">
+      <div class="col-xs-12">
+        <header>
+          <div class="well">Notely</div>
+        </header>
+      </div>
+    </div>
+    <div class="container">
+      <div class="row">
+        <div class="col-xs-4">
+          <nav id="sidebar">
+            <div class="well">
+              SIDEBAR
+            </div>
+          </nav>
+        </div>
+        <div class="col-xs-8">
+          <main>
+            <div class="well">
+              <!-- BEGIN main content -->
+              <div ng-view></div>
+              <!-- END main content -->
+            </div>
+          </main>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <!-- In production use:
   <script src="//ajax.googleapis.com/ajax/libs/angularjs/x.x.x/angular.min.js"></script>
@@ -42,5 +67,6 @@
   <script src="components/version/version.js"></script>
   <script src="components/version/version-directive.js"></script>
   <script src="components/version/interpolate-filter.js"></script>
+  <script src="bower_components/bootstrap/dist/js/bootstrap.min.js">
 </body>
 </html>
