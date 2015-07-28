@@ -37,9 +37,13 @@
     <div class="container">
       <div class="row">
         <div class="col-xs-4">
-          <nav id="sidebar">
+          <nav id="sidebar" ng-controller="NotesController">
             <div class="well">
-              SIDEBAR
+              <ul>
+                <li ng-repeat="note in notes">
+                  {{ note.title }}
+                </li>
+              </ul>
             </div>
           </nav>
         </div>
