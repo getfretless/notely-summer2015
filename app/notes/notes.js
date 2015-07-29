@@ -18,7 +18,7 @@ noteApp.service('NotesBackend', function NotesBackend($http) {
     return notes;
   };
 
-  this.fetchNotes = function fetchNotes(callback) {
+  this.fetchNotes = function (callback) {
     $http.get(nevernoteBasePath + 'notes?api_key=' + apiKey)
       .success(function(notesData) {
         notes = notesData;
@@ -32,23 +32,81 @@ noteApp.service('NotesBackend', function NotesBackend($http) {
       api_key: apiKey,
       note: noteData
     }).success(function(newNoteData){
-      _this.fetchNotes(callback);
+      var note = newNoteData.note;
+      notes.push(note);
+      typeof callback === 'function' && callback(notes, note);
+    });
+  };
+
+  this.replaceNote = function(note, callback) {
+    for(var i=0; i < notes.length; i++) {
+      if (notes[i].id === note.id) {
+        notes[i] = note;
+      }
+    }
+    typeof callback === 'function' && callback(notes);
+  };
+
+  this.updateNote = function(noteData, callback) {
+    var _this = this;
+    $http.put(nevernoteBasePath + 'notes/' + noteData.id, {
+      api_key: apiKey,
+      note: noteData
+    }).success(function(newNoteData){
+      _this.replaceNote(newNoteData.note, callback);
     });
   };
 });
 
-noteApp.controller('NotesController', function NotesController($scope, NotesBackend) {
+noteApp.controller('NotesController', function NotesController($scope, $filter, NotesBackend) {
   var _this = this;
   $scope.notes = [];
   $scope.note = {};
 
-  this.refreshNotes = function(notes) {
-    var sidebarScope = angular.element(document.getElementById("sidebar")).scope();
-    sidebarScope.notes = notes;
+  this.sidebarScope = function() {
+    return angular.element(document.getElementById("sidebar")).scope();
+  };
+
+  this.refreshNotes = function(notes, note) {
+    if (note) {
+      $scope.note = $scope.cloneNote(note);
+    }
+    _this.sidebarScope().notes = notes;
   };
 
   $scope.commit = function() {
-    NotesBackend.postNote($scope.note, _this.refreshNotes);
+    if ($scope.note.id) {
+      NotesBackend.updateNote($scope.note, _this.refreshNotes);
+    }
+    else {
+      $scope.note = NotesBackend.postNote($scope.note, _this.refreshNotes);
+    }
+  };
+
+  $scope.hasNotes = function() {
+    return this.notes.length > 0;
+  };
+
+  $scope.findNoteById = function(noteID) {
+    debugger
+    return $filter('filter')(_this.sidebarScope().notes, { id: noteID }, true)[0];
+  };
+
+  $scope.cloneNote = function(note) {
+    return JSON.parse(JSON.stringify(note));
+  };
+
+  $scope.loadNote = function(note) {
+    $scope.note = this.cloneNote(note);
+  };
+
+  $scope.buttonText = function(note) {
+    return (note && note.id) ? 'Update Note' : 'Create Note';
+  };
+
+  $scope.clearNote = function() {
+    $scope.note = {};
+    $scope.$broadcast('noteCleared');
   };
 
   NotesBackend.fetchNotes(this.refreshNotes);

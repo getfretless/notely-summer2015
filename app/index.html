@@ -37,15 +37,7 @@
     <div class="container" ng-controller="NotesController">
       <div class="row">
         <div class="col-xs-4">
-          <nav id="sidebar">
-            <div class="well">
-              <ul>
-                <li ng-repeat="note in notes" on-last-repeat>
-                  {{ note.title }}
-                </li>
-              </ul>
-            </div>
-          </nav>
+          <div ng-include="'sidebar.html'"></div>
         </div>
         <div class="col-xs-8">
           <main>
