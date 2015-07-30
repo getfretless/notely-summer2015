@@ -12,6 +12,7 @@
     "angular-mocks": "~1.4.0",
     "html5-boilerplate": "~5.2.0",
     "bootstrap": "3.3.5",
-    "font-awesome": "4.4.x"
+    "font-awesome": "4.4.x",
+    "textAngular": "1.4.x"
   }
 }
