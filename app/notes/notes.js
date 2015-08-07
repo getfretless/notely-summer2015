@@ -11,62 +11,7 @@ noteApp.config(['$routeProvider', function($routeProvider) {
   });
 }]);
 
-noteApp.service('NotesBackend', function NotesBackend($http) {
-  var notes = [];
-
-  this.getNotes = function() {
-    return notes;
-  };
-
-  this.fetchNotes = function (callback) {
-    $http.get(nevernoteBasePath + 'notes?api_key=' + apiKey)
-      .success(function(notesData) {
-        notes = notesData;
-        typeof callback === 'function' && callback(notes);
-      });
-  };
-
-  this.postNote = function(noteData, callback) {
-    var _this = this;
-    $http.post(nevernoteBasePath + 'notes', {
-      api_key: apiKey,
-      note: noteData
-    }).success(function(newNoteData){
-      var note = newNoteData.note;
-      notes.push(note);
-      typeof callback === 'function' && callback(notes, note);
-    });
-  };
-
-  this.replaceNote = function(note, callback) {
-    for(var i=0; i < notes.length; i++) {
-      if (notes[i].id === note.id) {
-        notes[i] = note;
-      }
-    }
-    typeof callback === 'function' && callback(notes);
-  };
-
-  this.updateNote = function(noteData, callback) {
-    var _this = this;
-    $http.put(nevernoteBasePath + 'notes/' + noteData.id, {
-      api_key: apiKey,
-      note: noteData
-    }).success(function(newNoteData){
-      _this.replaceNote(newNoteData.note, callback);
-    });
-  };
-
-  this.deleteNote = function(note, callback) {
-    var _this = this;
-    $http.delete(nevernoteBasePath + 'notes/' + note.id + '?api_key=' + apiKey)
-    .success(function(newNoteData){
-      _this.fetchNotes(callback);
-    });
-  };
-});
-
-noteApp.controller('NotesController', function NotesController($scope, $filter, NotesBackend) {
+noteApp.controller('NotesController', function NotesController($scope, $rootScope, $filter, NotesBackend) {
   var _this = this;
   $scope.notes = [];
   $scope.note = {};
@@ -76,6 +21,7 @@ noteApp.controller('NotesController', function NotesController($scope, $filter, 
   };
 
   this.refreshNotes = function(notes, note) {
+    console.log('refreshNotes');
     if (note) {
       $scope.note = $scope.cloneNote(note);
     }
@@ -123,4 +69,7 @@ noteApp.controller('NotesController', function NotesController($scope, $filter, 
   };
 
   NotesBackend.fetchNotes(this.refreshNotes);
+  $rootScope.$on('notesLoaded', function(ev, notes) {
+    _this.refreshNotes(notes);
+  });
 });
