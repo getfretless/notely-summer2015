@@ -37,7 +37,6 @@ app.service('NotesBackend', function NotesBackend($http, $cookies) {
         password: user.password
       }
     }).success(function(data){
-      console.log('got api key');
       apiKey = data.api_key;
       $cookies.put('apiKey', apiKey);
       _this.fetchNotes(function() {

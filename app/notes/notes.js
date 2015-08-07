@@ -21,7 +21,6 @@ noteApp.controller('NotesController', function NotesController($scope, $rootScop
   };
 
   this.refreshNotes = function(notes, note) {
-    console.log('refreshNotes');
     if (note) {
       $scope.note = $scope.cloneNote(note);
     }
@@ -42,7 +41,6 @@ noteApp.controller('NotesController', function NotesController($scope, $rootScop
   };
 
   $scope.findNoteById = function(noteID) {
-    debugger
     return $filter('filter')(_this.sidebarScope().notes, { id: noteID }, true)[0];
   };
 
