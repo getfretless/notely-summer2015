@@ -27,6 +27,10 @@ noteApp.controller('NotesController', function NotesController($scope, $rootScop
     _this.sidebarScope().notes = notes;
   };
 
+  $scope.user = function() {
+    return NotesBackend.getUser();
+  };
+
   $scope.commit = function() {
     if ($scope.note.id) {
       NotesBackend.updateNote($scope.note, _this.refreshNotes);

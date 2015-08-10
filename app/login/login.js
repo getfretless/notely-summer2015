@@ -9,11 +9,12 @@ angular.module('notely.login', ['ngRoute'])
   });
 }])
 
-.controller('LoginController', function($scope, $rootScope, $location, $window, NotesBackend) {
+.controller('LoginController', function($scope, $rootScope, $location, NotesBackend) {
   $scope.user = {};
   $scope.submit = function() {
-    NotesBackend.fetchApiKey($scope.user, function(notes) {
+    NotesBackend.fetchUser($scope.user, function(user, notes) {
       $location.path('notes');
+      $scope.user = user;
       $rootScope.$broadcast('notesLoaded', notes);
     });
   };

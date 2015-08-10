@@ -23,24 +23,24 @@ app.directive('focusOn', function() {
 
 app.service('NotesBackend', function NotesBackend($http, $cookies) {
   var notes = [];
-  var apiKey = $cookies.get('apiKey') || '';
+  var user = $cookies.get('user') ? JSON.parse($cookies.get('user')) : {};
 
-  this.getApiKey = function() {
-    return apiKey;
+  this.getUser = function() {
+    return user;
   };
 
-  this.fetchApiKey = function(user, callback) {
+  this.fetchUser = function(userFormData, callback) {
     var _this = this;
-    $http.post(nevernoteBasePath+'session', {
+    $http.post(nevernoteBasePath + 'session', {
       user: {
-        username: user.username,
-        password: user.password
+        username: userFormData.username,
+        password: userFormData.password
       }
-    }).success(function(data){
-      apiKey = data.api_key;
-      $cookies.put('apiKey', apiKey);
+    }).success(function(userData){
+      $cookies.put('user', JSON.stringify(userData));
+      user = userData;
       _this.fetchNotes(function() {
-        typeof callback === 'function' && callback(notes);
+        typeof callback === 'function' && callback(user, notes);
       });
     });
   };
@@ -50,17 +50,19 @@ app.service('NotesBackend', function NotesBackend($http, $cookies) {
   };
 
   this.fetchNotes = function (callback) {
-    $http.get(nevernoteBasePath + 'notes?api_key=' + apiKey)
-      .success(function(notesData) {
-        notes = notesData;
-        typeof callback === 'function' && callback(notes);
-      });
+    if (user.api_key) {
+      $http.get(nevernoteBasePath + 'notes?api_key=' + user.api_key)
+        .success(function(notesData) {
+          notes = notesData;
+          typeof callback === 'function' && callback(notes);
+        });
+    }
   };
 
   this.postNote = function(noteData, callback) {
     var _this = this;
     $http.post(nevernoteBasePath + 'notes', {
-      api_key: apiKey,
+      api_key: user.api_key,
       note: noteData
     }).success(function(newNoteData){
       var note = newNoteData.note;
