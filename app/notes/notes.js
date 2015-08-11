@@ -11,7 +11,7 @@ noteApp.config(['$routeProvider', function($routeProvider) {
   });
 }]);
 
-noteApp.controller('NotesController', function NotesController($scope, $rootScope, $filter, NotesBackend) {
+noteApp.controller('NotesController', function NotesController($scope, $rootScope, $filter, $location, NotesBackend) {
   var _this = this;
   $scope.notes = [];
   $scope.note = {};
@@ -68,6 +68,15 @@ noteApp.controller('NotesController', function NotesController($scope, $rootScop
   $scope.deleteNote = function() {
     NotesBackend.deleteNote($scope.note, _this.refreshNotes);
     this.clearNote();
+  };
+
+  $scope.logout = function() {
+    NotesBackend.deleteCookie();
+    $location.path('login');
+  };
+
+  $scope.goToSignIn = function() {
+    $location.path('login');
   };
 
   NotesBackend.fetchNotes(this.refreshNotes);

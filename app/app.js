@@ -9,8 +9,9 @@ var app = angular.module('notely', [
   'notely.login'
 ]);
 
-app.config(['$routeProvider', function($routeProvider) {
-  $routeProvider.otherwise({redirectTo: '/notes'});
+app.config(['$routeProvider', '$locationProvider', function($routeProvider, $locationProvider) {
+  $routeProvider.otherwise({redirectTo: '/login'});
+  $locationProvider.html5Mode(true);
 }]);
 
 app.directive('focusOn', function() {
@@ -24,6 +25,12 @@ app.directive('focusOn', function() {
 app.service('NotesBackend', function NotesBackend($http, $cookies) {
   var notes = [];
   var user = $cookies.get('user') ? JSON.parse($cookies.get('user')) : {};
+
+  this.deleteCookie = function() {
+    $cookies.remove('user');
+    user = {};
+    notes = [];
+  };
 
   this.getUser = function() {
     return user;
@@ -42,6 +49,9 @@ app.service('NotesBackend', function NotesBackend($http, $cookies) {
       _this.fetchNotes(function() {
         typeof callback === 'function' && callback(user, notes);
       });
+    }).error(function(userData) {
+      userData = userData || { error: 'Oops! Something went wrong when logging in.' };
+      typeof callback === 'function' && callback(userData);
     });
   };
 

@@ -5,6 +5,7 @@
 <!--[if gt IE 8]><!--> <html lang="en" ng-app="notely" class="no-js"> <!--<![endif]-->
 <head>
   <meta charset="utf-8">
+  <base href="/">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <title>Notely</title>
   <meta name="description" content="Note taking to the next level">
@@ -31,8 +32,20 @@
   <div class="container wrap">
     <div class="row">
       <div class="col-xs-12">
-        <header>
-          <div class="well">Notely</div>
+        <header ng-controller="NotesController">
+          <div class="well">
+            Notely
+            <div class="user-links">
+              <div ng-show="user().id">
+                Signed in as {{ user().name }}
+                |
+                <a ng-click="logout()">Logout</a>
+              </div>
+              <div ng-hide="user().id">
+                <a ng-click="goToSignIn()">Sign in</a>
+              </div>
+            </div>
+          </div>
         </header>
       </div>
     </div>
