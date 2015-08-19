@@ -24,10 +24,10 @@ header .well {
 h1, h2, h3, h4, h5 {
   font-family: Merriweather;
   font-weight: 300;
-  color: #2dbe60; }
+  color: #FE5F55; }
 
 a:link, a:visited, a:hover, a:active {
-  color: #2dbe60; }
+  color: #FE5F55; }
 
 .bootsy_text_area {
   width: 100%;
@@ -52,7 +52,7 @@ input#note_title {
   border: none;
   font-size: 200%;
   font-family: Merriweather;
-  color: #2dbe60;
+  color: #FE5F55;
   font-weight: 300;
   width: 100%; }
   input#note_title:focus {
@@ -75,7 +75,7 @@ ul#notes {
       border-top: none; }
     ul#notes li:hover {
       color: white;
-      background-color: #2dbe60; }
+      background-color: #FE5F55; }
       ul#notes li:hover .note-title {
         color: white; }
     ul#notes li .note-title {
@@ -96,7 +96,7 @@ ul#notes {
   padding: 0.25em; }
 
 #welcome h1 {
-  color: #2dbe60; }
+  color: #FE5F55; }
 #welcome main {
   margin: 0 auto;
   width: 360px; }
